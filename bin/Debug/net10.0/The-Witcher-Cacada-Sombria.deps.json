@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "The-Witcher-Cacada-Sombria/1.0.0": {
+        "runtime": {
+          "The-Witcher-Cacada-Sombria.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "The-Witcher-Cacada-Sombria/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

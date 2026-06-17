@@ -1,0 +1,15 @@
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\bin\Debug\net10.0\The-Witcher-Cacada-Sombria.exe
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\bin\Debug\net10.0\The-Witcher-Cacada-Sombria.deps.json
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\bin\Debug\net10.0\The-Witcher-Cacada-Sombria.runtimeconfig.json
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\bin\Debug\net10.0\The-Witcher-Cacada-Sombria.dll
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\bin\Debug\net10.0\The-Witcher-Cacada-Sombria.pdb
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\obj\Debug\net10.0\The-Witcher-Cacada-Sombria.GeneratedMSBuildEditorConfig.editorconfig
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\obj\Debug\net10.0\The-Witcher-Cacada-Sombria.AssemblyInfoInputs.cache
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\obj\Debug\net10.0\The-Witcher-Cacada-Sombria.AssemblyInfo.cs
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\obj\Debug\net10.0\The-Witcher-Cacada-Sombria.csproj.CoreCompileInputs.cache
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\obj\Debug\net10.0\The-Witcher-Cacada-Sombria.sourcelink.json
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\obj\Debug\net10.0\The-Witcher-Cacada-Sombria.dll
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\obj\Debug\net10.0\refint\The-Witcher-Cacada-Sombria.dll
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\obj\Debug\net10.0\The-Witcher-Cacada-Sombria.pdb
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\obj\Debug\net10.0\The-Witcher-Cacada-Sombria.genruntimeconfig.cache
+G:\Programação\Trabalho POO RPG\The-Witcher-Cacada-Sombria\obj\Debug\net10.0\ref\The-Witcher-Cacada-Sombria.dll
