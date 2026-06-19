@@ -19,11 +19,10 @@ Jogo de RPG por turnos em console, baseado no universo The Witcher, desenvolvido
 
 ```bash
 dotnet run
----
-
-## 1️⃣ Diagrama Textual das Classes
 
 ```
+---
+## 1️⃣ Diagrama Textual das Classes
 [Interface] IAtacavel               [Interface] IHabilidade
 ┌──────────────────────┐            ┌────────────────────────┐
 │ + Atacar(alvo)       │            │ + NomeHabilidade       │
