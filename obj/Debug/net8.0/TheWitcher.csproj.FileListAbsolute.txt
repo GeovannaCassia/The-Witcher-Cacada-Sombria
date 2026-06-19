@@ -1,0 +1,14 @@
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\bin\Debug\net8.0\TheWitcher.exe
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\bin\Debug\net8.0\TheWitcher.deps.json
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\bin\Debug\net8.0\TheWitcher.runtimeconfig.json
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\bin\Debug\net8.0\TheWitcher.dll
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\bin\Debug\net8.0\TheWitcher.pdb
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\obj\Debug\net8.0\TheWitcher.GeneratedMSBuildEditorConfig.editorconfig
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\obj\Debug\net8.0\TheWitcher.AssemblyInfoInputs.cache
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\obj\Debug\net8.0\TheWitcher.AssemblyInfo.cs
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\obj\Debug\net8.0\TheWitcher.csproj.CoreCompileInputs.cache
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\obj\Debug\net8.0\TheWitcher.dll
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\obj\Debug\net8.0\refint\TheWitcher.dll
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\obj\Debug\net8.0\TheWitcher.pdb
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\obj\Debug\net8.0\TheWitcher.genruntimeconfig.cache
+G:\Programação\Trabalho POO RPG\codigoantoni\TW2\obj\Debug\net8.0\ref\TheWitcher.dll

@@ -1,125 +1,194 @@
-﻿using System;
-using RpgGame.Enums;
-using RpgGame.Models;
-using RpgGame.Services;
+using System;
+using TheWitcher.Enums;
+using TheWitcher.Models;
+using TheWitcher.Services;
+using TheWitcher.Utils;
 
-namespace RpgGame
+class Program
 {
-    internal class Program
+    static Jogador jogador;
+    static SistemaMissoes sistemaMissoes;
+
+    static void Main(string[] args)
     {
-        static void Main()
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Display.ExibirTitulo();
+        Display.Pausar("\n  Pressione ENTER para comecar...");
+        MenuInicial();
+    }
+
+    // ─── Menu Inicial ────────────────────────────────────────────
+    static void MenuInicial()
+    {
+        while (true)
         {
-            Console.Title = "RPG - POO";
+            Display.ExibirTitulo();
+            Console.WriteLine("\n  1 - Novo Jogo");
+            if (SistemaArquivo.ExisteSave())
+                Console.WriteLine("  2 - Continuar Jogo Salvo");
+            Console.WriteLine("  3 - Ver Diagrama de Classes");
+            Console.WriteLine("  0 - Sair");
+            Console.Write("\n  Escolha: ");
 
-            Console.WriteLine("=== RPG POR TURNOS ===");
-            Console.WriteLine("Crie seu personagem:");
-            Console.Write("Nome: ");
-            string nome = Console.ReadLine() ?? "Herói";
+            string op = Console.ReadLine();
 
-            ClassePersonagem classe = EscolherClasse();
-            RacaPersonagem raca = EscolherRaca();
+            if (op == "1")
+            {
+                // Deleta save anterior ao iniciar novo jogo
+                SistemaArquivo.DeletarSave();
+                NovoJogo();
+            }
+            else if (op == "2" && SistemaArquivo.ExisteSave())
+            {
+                CarregarJogo();
+            }
+            else if (op == "3")
+            {
+                Display.ExibirDiagramaClasses();
+                Display.Pausar();
+            }
+            else if (op == "0")
+            {
+                Console.WriteLine("\n  Ate logo!\n");
+                return;
+            }
+        }
+    }
 
-            Jogador jogador = CriarJogador(nome, classe, raca);
+    // ─── Novo Jogo ───────────────────────────────────────────────
+    static void NovoJogo()
+    {
+        jogador = CriacaoPersonagem.Criar();
+        sistemaMissoes = new SistemaMissoes(jogador);
+        LoopJogo();
+    }
 
-            jogador.AdicionarItem(new Item("Poção de Cura", TipoItem.Consumivel, 30, 1));
+    // ─── Carregar Jogo Salvo ─────────────────────────────────────
+    static void CarregarJogo()
+    {
+        var dados = SistemaArquivo.Carregar();
+        if (dados == null)
+        {
+            Console.WriteLine("\n  [!] Nao foi possivel carregar o save.");
+            Display.Pausar();
+            return;
+        }
 
+        // Recria o jogador com a classe correta
+        RacaPersonagem raca =
+            dados.Raca == "Elfo" ? RacaPersonagem.Elfo :
+            dados.Raca == "Anao" ? RacaPersonagem.Anao :
+                                   RacaPersonagem.Humano;
+
+        if (dados.Classe == "Mago")
+            jogador = new Mago(dados.Nome, raca);
+        else if (dados.Classe == "Arqueiro")
+            jogador = new Arqueiro(dados.Nome, raca);
+        else
+            jogador = new Guerreiro(dados.Nome, raca);
+
+        // Restaura atributos salvos
+        jogador.Nivel     = dados.Nivel;
+        jogador.VidaMaxima = dados.VidaMaxima;
+        jogador.Vida      = dados.Vida;
+        jogador.Forca     = dados.Forca;
+
+        // Restaura inventário salvo
+        jogador.Inventario.Itens.Clear();
+        for (int i = 0; i < dados.NomesItens.Count; i++)
+        {
+            TipoItem tipo = dados.TiposItens[i] == "Equipamento"
+                ? TipoItem.Equipamento
+                : TipoItem.Consumivel;
+            jogador.Inventario.AdicionarItem(
+                new Item(dados.NomesItens[i], tipo, dados.CurasItens[i])
+            );
+        }
+
+        // Recria sistema de missões e avança para a missão correta
+        sistemaMissoes = new SistemaMissoes(jogador, dados.MissaoAtual);
+
+        Console.WriteLine($"\n  [SAVE] Bem-vindo de volta, {jogador.Nome}!");
+        Console.WriteLine($"  Missao: {dados.MissaoAtual + 1}/3 | Vida: {jogador.Vida}/{jogador.VidaMaxima} | Forca: {jogador.Forca}");
+        Display.Pausar();
+
+        LoopJogo();
+    }
+
+    // ─── Loop principal do jogo ───────────────────────────────────
+    static void LoopJogo()
+    {
+        bool jogando = true;
+        while (jogando && !sistemaMissoes.JogoConcluido())
+            jogando = MenuJogo();
+
+        if (sistemaMissoes.JogoConcluido())
+        {
+            SistemaArquivo.DeletarSave(); // limpa save ao vencer
+            Display.ExibirVitoria(jogador.Nome);
+        }
+        else
+        {
+            Display.ExibirDerrota(jogador.Nome);
+        }
+
+        Display.Pausar();
+    }
+
+    // ─── Menu durante o jogo ─────────────────────────────────────
+    static bool MenuJogo()
+    {
+        Display.ExibirTitulo();
+        Console.WriteLine($"\n  Jogador : {jogador.Nome} ({jogador.Classe} / {jogador.Raca})");
+        Console.WriteLine($"  Vida    : {jogador.Vida}/{jogador.VidaMaxima} | Forca: {jogador.Forca}");
+        Console.WriteLine($"  Missao  : {sistemaMissoes.MissaoAtual + 1}/3");
+        Display.Separador();
+        Console.WriteLine("\n  1 - Ver Missoes");
+        Console.WriteLine("  2 - Iniciar Proxima Missao");
+        Console.WriteLine("  3 - Ver Status do Personagem");
+        Console.WriteLine("  4 - Ver Inventario");
+        Console.WriteLine("  5 - Salvar Jogo");
+        Console.WriteLine("  0 - Abandonar (voltar ao menu)");
+        Console.Write("\n  Escolha: ");
+
+        string op = Console.ReadLine();
+
+        if (op == "1")
+        {
+            sistemaMissoes.ExibirMissoes();
+            Display.Pausar();
+            return true;
+        }
+        else if (op == "2")
+        {
+            bool vivo = sistemaMissoes.IniciarProximaMissao();
+            return vivo;
+        }
+        else if (op == "3")
+        {
             Console.Clear();
-            Console.WriteLine($"Personagem criado: {jogador}");
-            Console.WriteLine();
-
-            var missaoService = new MissaoService();
-            var combateService = new CombateService();
-
-            var missoes = missaoService.CriarMissoes();
-
-            foreach (var missao in missoes)
-            {
-                Console.WriteLine($"\n=== {missao.Nome} ===");
-                Console.WriteLine(missao.Descricao);
-                Console.WriteLine();
-
-                missao.MarcarComoEmAndamento();
-
-                foreach (var inimigo in missao.Inimigos)
-                {
-                    Console.WriteLine($"Inimigo da rodada: {inimigo.Nome}");
-                    bool venceu = combateService.IniciarCombate(jogador, inimigo);
-
-                    if (!venceu)
-                    {
-                        Console.WriteLine("\nVocê foi derrotado...");
-                        return;
-                    }
-
-                    Console.WriteLine();
-                }
-
-                missao.MarcarComoConcluida();
-
-                jogador.EvoluirAposMissao();
-
-                Console.WriteLine($"\nMissão concluída! Seu personagem evoluiu.");
-                Console.WriteLine($"Nível: {jogador.Nivel}");
-                Console.WriteLine($"Vida Máxima: {jogador.VidaMaxima}");
-                Console.WriteLine($"Força: {jogador.Forca}");
-                Console.WriteLine($"Vida Atual: {jogador.Vida}");
-                Console.WriteLine();
-
-                Console.WriteLine("Pressione qualquer tecla para continuar...");
-                Console.ReadKey();
-                Console.Clear();
-            }
-
-            Console.WriteLine("\nParabéns! Você concluiu as 3 missões e venceu o jogo.");
+            jogador.ExibirStatus();
+            Display.Pausar();
+            return true;
         }
-
-        private static ClassePersonagem EscolherClasse()
+        else if (op == "4")
         {
-            while (true)
-            {
-                Console.WriteLine("\nEscolha sua classe:");
-                Console.WriteLine("1 - Guerreiro");
-                Console.WriteLine("2 - Mago");
-                Console.WriteLine("3 - Arqueiro");
-
-                string input = Console.ReadLine();
-
-                if (input == "1") return ClassePersonagem.Guerreiro;
-                if (input == "2") return ClassePersonagem.Mago;
-                if (input == "3") return ClassePersonagem.Arqueiro;
-
-                Console.WriteLine("Opção inválida.");
-            }
+            Console.Clear();
+            jogador.Inventario.Exibir();
+            Display.Pausar();
+            return true;
         }
-
-        private static RacaPersonagem EscolherRaca()
+        else if (op == "5")
         {
-            while (true)
-            {
-                Console.WriteLine("\nEscolha sua raça:");
-                Console.WriteLine("1 - Humano");
-                Console.WriteLine("2 - Elfo");
-                Console.WriteLine("3 - Anão");
-
-                string input = Console.ReadLine();
-
-                if (input == "1") return RacaPersonagem.Humano;
-                if (input == "2") return RacaPersonagem.Elfo;
-                if (input == "3") return RacaPersonagem.Anao;
-
-                Console.WriteLine("Opção inválida.");
-            }
+            SistemaArquivo.Salvar(jogador, sistemaMissoes.MissaoAtual);
+            Display.Pausar();
+            return true;
         }
-
-        private static Jogador CriarJogador(string nome, ClassePersonagem classe, RacaPersonagem raca)
+        else if (op == "0")
         {
-            return classe switch
-            {
-                ClassePersonagem.Guerreiro => new Guerreiro(nome, raca),
-                ClassePersonagem.Mago => new Mago(nome, raca),
-                ClassePersonagem.Arqueiro => new Arqueiro(nome, raca),
-                _ => new Guerreiro(nome, raca)
-            };
+            return false;
         }
+
+        return true;
     }
 }

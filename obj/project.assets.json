@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\Programação\\Trabalho POO RPG\\The-Witcher-Cacada-Sombria\\The-Witcher-Cacada-Sombria.csproj",
-      "projectName": "The-Witcher-Cacada-Sombria",
-      "projectPath": "G:\\Programação\\Trabalho POO RPG\\The-Witcher-Cacada-Sombria\\The-Witcher-Cacada-Sombria.csproj",
+      "projectUniqueName": "G:\\Programação\\Trabalho POO RPG\\The-Witcher-Cacada-Sombria\\TheWitcher.csproj",
+      "projectName": "TheWitcher",
+      "projectPath": "G:\\Programação\\Trabalho POO RPG\\The-Witcher-Cacada-Sombria\\TheWitcher.csproj",
       "packagesPath": "C:\\Users\\pedro\\.nuget\\packages\\",
       "outputPath": "G:\\Programação\\Trabalho POO RPG\\The-Witcher-Cacada-Sombria\\obj\\",
       "projectStyle": "PackageReference",

@@ -1,74 +1,75 @@
 using System;
+using TheWitcher.Interfaces;
 
-namespace RpgGame.Models
+// Classe abstrata obrigatória conforme enunciado
+// Serve de base para Jogador e Inimigo
+public abstract class PersonagemBase : IAtacavel
 {
-    public abstract class PersonagemBase
+    // ─── Atributos privados (Encapsulamento) ───────────────────
+    private string _nome;
+    private int _vida;
+    private int _vidaMaxima;
+    private int _forca;
+    private int _nivel;
+
+    // ─── Propriedades públicas ──────────────────────────────────
+    public string Nome
     {
-        private string _nome;
-        private int _vida;
-        private int _vidaMaxima;
-        private int _forca;
-        private int _nivel;
+        get { return _nome; }
+        set { _nome = value; }
+    }
 
-        protected PersonagemBase(string nome, int vidaMaxima, int forca)
-        {
-            _nome = nome;
-            _vidaMaxima = vidaMaxima;
-            _forca = forca;
-            _nivel = 1;
-            _vida = _vidaMaxima;
-        }
+    public int Vida
+    {
+        // Impede que a vida fique negativa
+        get { return _vida; }
+        set { _vida = value < 0 ? 0 : value; }
+    }
 
-        public string Nome => _nome;
+    public int VidaMaxima
+    {
+        get { return _vidaMaxima; }
+        set { _vidaMaxima = value; }
+    }
 
-        public int Vida
-        {
-            get => _vida;
-            protected set
-            {
-                if (value < 0) _vida = 0;
-                else if (value > _vidaMaxima) _vida = _vidaMaxima;
-                else _vida = value;
-            }
-        }
+    public int Forca
+    {
+        get { return _forca; }
+        set { _forca = value; }
+    }
 
-        public int VidaMaxima
-        {
-            get => _vidaMaxima;
-            protected set
-            {
-                _vidaMaxima = value > 0 ? value : 1;
-                if (_vida > _vidaMaxima) _vida = _vidaMaxima;
-            }
-        }
+    public int Nivel
+    {
+        get { return _nivel; }
+        set { _nivel = value; }
+    }
 
-        public int Forca
-        {
-            get => _forca;
-            protected set => _forca = value > 0 ? value : 1;
-        }
+    // Propriedade somente-leitura para verificar se está vivo
+    public bool Vivo
+    {
+        get { return _vida > 0; }
+    }
 
-        public int Nivel
-        {
-            get => _nivel;
-            protected set => _nivel = value > 0 ? value : 1;
-        }
+    // ─── Construtor ─────────────────────────────────────────────
+    protected PersonagemBase(string nome, int vidaMaxima, int forca, int nivel = 1)
+    {
+        _nome       = nome;
+        _vidaMaxima = vidaMaxima;
+        _vida       = vidaMaxima;  // começa com vida cheia
+        _forca      = forca;
+        _nivel      = nivel;
+    }
 
-        public bool Vivo => Vida > 0;
+    // ─── Métodos Abstratos (Abstração + Polimorfismo) ───────────
+    // Cada subclasse DEVE implementar sua forma de atacar
+    public abstract void Atacar(PersonagemBase alvo);
 
-        public abstract int Atacar();
+    // Cada subclasse DEVE implementar como recebe dano
+    public abstract void ReceberDano(int dano);
 
-        public abstract void ReceberDano(int dano);
-
-        public void Curar(int quantidade)
-        {
-            if (quantidade <= 0) return;
-            Vida += quantidade;
-        }
-
-        public override string ToString()
-        {
-            return $"{Nome} (Vida: {Vida}/{VidaMaxima}, Força: {Forca}, Nível: {Nivel})";
-        }
+    // ─── Método virtual — pode ser sobrescrito ──────────────────
+    public virtual void ExibirStatus()
+    {
+        Console.WriteLine($"  {_nome} | Vida: {_vida}/{_vidaMaxima} | Forca: {_forca} | Nivel: {_nivel}");
     }
 }

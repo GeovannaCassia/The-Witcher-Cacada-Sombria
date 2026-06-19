@@ -1,31 +1,44 @@
-using RpgGame.Enums;
+using TheWitcher.Enums;
 
-namespace RpgGame.Models
+namespace TheWitcher.Models
 {
+    // Entidade Item conforme enunciado
     public class Item
     {
+        // Atributos privados — Encapsulamento
         private string _nome;
         private TipoItem _tipo;
-        private int _cura;
-        private int _quantidade;
+        private int _quantidadeCura;
 
-        public Item(string nome, TipoItem tipo, int cura, int quantidade)
+        public string Nome
         {
-            _nome = nome;
-            _tipo = tipo;
-            _cura = cura;
-            _quantidade = quantidade > 0 ? quantidade : 1;
+            get { return _nome; }
+            set { _nome = value; }
         }
 
-        public string Nome => _nome;
-        public TipoItem Tipo => _tipo;
-        public int Cura => _cura;
-        public int Quantidade
+        public TipoItem Tipo
         {
-            get => _quantidade;
-            set => _quantidade = value > 0 ? value : 0;
+            get { return _tipo; }
         }
 
-        public bool Consumivel => Tipo == TipoItem.Consumivel;
+        // Quantidade de vida restaurada (aplicável apenas para consumíveis de cura)
+        public int QuantidadeCura
+        {
+            get { return _quantidadeCura; }
+        }
+
+        public Item(string nome, TipoItem tipo, int quantidadeCura = 0)
+        {
+            _nome          = nome;
+            _tipo          = tipo;
+            _quantidadeCura = quantidadeCura;
+        }
+
+        public override string ToString()
+        {
+            if (_tipo == TipoItem.Consumivel && _quantidadeCura > 0)
+                return $"{_nome} (Cura: +{_quantidadeCura} vida)";
+            return $"{_nome} ({_tipo})";
+        }
     }
 }

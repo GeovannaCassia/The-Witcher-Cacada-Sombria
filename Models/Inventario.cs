@@ -1,58 +1,67 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using TheWitcher.Models;
 
-namespace RpgGame.Models
+namespace TheWitcher.Models
 {
+    // Gerencia o inventário do jogador com limite de 10 itens
     public class Inventario
     {
-        private readonly int _capacidadeMaxima = 10;
-        private readonly List<Item> _itens = new();
+        private List<Item> _itens;
+        private const int CAPACIDADE_MAXIMA = 10;   // limite definido no enunciado
 
-        public int CapacidadeMaxima => _capacidadeMaxima;
+        public List<Item> Itens { get { return _itens; } }
+        public int Capacidade  { get { return CAPACIDADE_MAXIMA; } }
 
-        public IReadOnlyList<Item> Itens => _itens;
-
-        public void AdicionarItem(Item item)
+        public Inventario()
         {
-            if (item == null)
-                throw new ArgumentNullException(nameof(item));
-
-            if (_itens.Count >= _capacidadeMaxima)
-                throw new InvalidOperationException("Inventário cheio.");
-
-            _itens.Add(item);
+            _itens = new List<Item>();
         }
 
-        public bool RemoverItem(string nomeItem)
+        // Tenta adicionar item; retorna false se o inventário estiver cheio
+        public bool AdicionarItem(Item item)
         {
-            Item item = _itens.FirstOrDefault(i => i.Nome.Equals(nomeItem, StringComparison.OrdinalIgnoreCase));
-            if (item == null) return false;
-
-            item.Quantidade--;
-            if (item.Quantidade <= 0)
-                _itens.Remove(item);
-
+            if (_itens.Count >= CAPACIDADE_MAXIMA)
+            {
+                Console.WriteLine("  [!] Inventario cheio! Capacidade maxima: 10 itens.");
+                return false;
+            }
+            _itens.Add(item);
             return true;
         }
 
-        public Item? BuscarItem(string nomeItem)
+        // Remove e retorna o primeiro item de cura disponível
+        public Item RetirarPrimeiroCuravel()
         {
-            return _itens.FirstOrDefault(i => i.Nome.Equals(nomeItem, StringComparison.OrdinalIgnoreCase));
+            for (int i = 0; i < _itens.Count; i++)
+            {
+                if (_itens[i].QuantidadeCura > 0)
+                {
+                    Item item = _itens[i];
+                    _itens.RemoveAt(i);   // removido após o uso (enunciado)
+                    return item;
+                }
+            }
+            return null;
         }
 
-        public void ListarItens()
+        public void Exibir()
         {
+            Console.WriteLine($"\n  ╔══════════════════════════════╗");
+            Console.WriteLine($"  ║         INVENTARIO           ║");
+            Console.WriteLine($"  ╠══════════════════════════════╣");
             if (_itens.Count == 0)
             {
-                Console.WriteLine("Inventário vazio.");
-                return;
+                Console.WriteLine("  ║   (vazio)                    ║");
             }
-
-            foreach (var item in _itens)
+            else
             {
-                Console.WriteLine($"- {item.Nome} ({item.Tipo}) x{item.Quantidade}");
+                for (int i = 0; i < _itens.Count; i++)
+                    Console.WriteLine($"  ║  {i + 1,2}. {_itens[i],-25}║");
             }
+            Console.WriteLine($"  ╠══════════════════════════════╣");
+            Console.WriteLine($"  ║  Capacidade: {_itens.Count}/{CAPACIDADE_MAXIMA,-17}║");
+            Console.WriteLine($"  ╚══════════════════════════════╝");
         }
     }
 }
